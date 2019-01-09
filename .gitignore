@@ -1,0 +1,9 @@
+debug_build/
+build/
+ui_*
+Makefile*
+object_script*
+sanguosha.qm
+config.ini
+swig/sanguosha_wrap.cxx
+debugQSanguosha
