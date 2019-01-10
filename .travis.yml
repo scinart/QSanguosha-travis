@@ -6,6 +6,6 @@ before_install:
   - brew update
   - brew install qt5
   - brew install swig
-
+  - brew link qt5 --force
 script:
   - make debug -f linux.mk

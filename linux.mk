@@ -15,6 +15,12 @@ OLDPWD:=$(PWD)
 BUILD:=$(PWD)/build
 DEBUG_BUILD:=$(PWD)/debug_build
 
+ifeq ($(UNAME),Darwin)
+    QMAKE=qmake
+else
+    QMAKE=qmake-qt5
+endif
+
 all: debug
 
 debug: debugQSanguosha
@@ -27,10 +33,10 @@ swig/sanguosha_wrap.cxx: swig/ai.i swig/card.i swig/list.i swig/luaskills.i swig
 	cd swig && swig -c++ -lua sanguosha.i
 
 $(BUILD)/Makefile: $(OLDPWD)/QSanguosha.pro
-	cd $(BUILD) && qmake-qt5 $(OLDPWD)/QSanguosha.pro "CONFIG+=release"
+	cd $(BUILD) && $(QMAKE) $(OLDPWD)/QSanguosha.pro "CONFIG+=release"
 
 $(DEBUG_BUILD)/Makefile: $(OLDPWD)/QSanguosha.pro
-	cd $(DEBUG_BUILD) && qmake-qt5 $(OLDPWD)/QSanguosha.pro "CONFIG+=debug"
+	cd $(DEBUG_BUILD) && $(QMAKE) $(OLDPWD)/QSanguosha.pro "CONFIG+=debug"
 
 $(BUILD)/swig/sanguosha_wrap.cxx: swig/sanguosha_wrap.cxx
 	mkdir -p $(BUILD)/swig
