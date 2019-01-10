@@ -1435,20 +1435,17 @@ void RoomScene::keyReleaseEvent(QKeyEvent *event)
     case Qt::Key_1:
     case Qt::Key_2:
     case Qt::Key_3:
-    case Qt::Key_4: {
-        int position = event->key() - Qt::Key_0;
-        if (position != 0 && alt_is_down) {
-            dashboard->selectEquip(position);
-            break;
-        }
-    }
+    case Qt::Key_4:
     case Qt::Key_5:
     case Qt::Key_6:
     case Qt::Key_7:
     case Qt::Key_8:
     case Qt::Key_9: {
-        int order = event->key() - Qt::Key_0;
-        selectTarget(order, control_is_down);
+        int position = event->key() - Qt::Key_0;
+        if (alt_is_down)
+            dashboard->selectEquip(position);
+        else
+            selectTarget(position, shift_is_down);
         break;
     }
 

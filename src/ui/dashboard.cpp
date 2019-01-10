@@ -393,6 +393,8 @@ void Dashboard::selectCard(const QString &pattern, bool forward, bool multiple)
 void Dashboard::selectEquip(int position)
 {
     int i = position - 1;
+    if (i< 0 || i >= sizeof(_m_equipCards) / sizeof(_m_equipCards[0]))
+        return;
     if (_m_equipCards[i] && _m_equipCards[i]->isMarkable()) {
         _m_equipCards[i]->mark(!_m_equipCards[i]->isMarked());
         update();
