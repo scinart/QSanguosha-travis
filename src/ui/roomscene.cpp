@@ -1155,7 +1155,7 @@ void RoomScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if (wasOutsideDashboard && !_m_isInDragAndUseMode) {
             if (!_m_superDragStarted && !dashboard->getPendings().isEmpty())
                 dashboard->clearPendings();
-            dashboard->selectCard(card_item, true);
+            dashboard->selectCard(card_item);
             if (dashboard->currentSkill() && !dashboard->getPendings().contains(card_item)) {
                 dashboard->addPending(card_item);
                 dashboard->updatePending();
@@ -1355,6 +1355,7 @@ void RoomScene::keyReleaseEvent(QKeyEvent *event)
     if (chat_edit->hasFocus()) return;
 
     bool control_is_down = event->modifiers() & Qt::ControlModifier;
+    bool shift_is_down = event->modifiers() & Qt::ShiftModifier;
     bool alt_is_down = event->modifiers() & Qt::AltModifier;
 
     switch (event->key()) {
@@ -1386,35 +1387,36 @@ void RoomScene::keyReleaseEvent(QKeyEvent *event)
         }
         break;
     }
-
-    case Qt::Key_S: dashboard->selectCard("slash");  break;
-    case Qt::Key_J: dashboard->selectCard("jink"); break;
-    case Qt::Key_P: dashboard->selectCard("peach"); break;
-    case Qt::Key_O: dashboard->selectCard("analeptic"); break;
-
-    case Qt::Key_E: dashboard->selectCard("equip"); break;
-    case Qt::Key_W: dashboard->selectCard("weapon"); break;
-    case Qt::Key_F: dashboard->selectCard("armor"); break;
-    case Qt::Key_H: dashboard->selectCard("defensive_horse+offensive_horse"); break;
-
-    case Qt::Key_T: dashboard->selectCard("trick"); break;
-    case Qt::Key_A: dashboard->selectCard("aoe"); break;
-    case Qt::Key_N: dashboard->selectCard("nullification"); break;
-    case Qt::Key_Q: dashboard->selectCard("snatch"); break;
-    case Qt::Key_C: dashboard->selectCard("dismantlement"); break;
-    case Qt::Key_U: dashboard->selectCard("duel"); break;
-    case Qt::Key_L: dashboard->selectCard("lightning"); break;
-    case Qt::Key_I: dashboard->selectCard("indulgence"); break;
-    case Qt::Key_B: dashboard->selectCard("supply_shortage"); break;
-
-    case Qt::Key_Left: dashboard->selectCard(".", false, control_is_down); break;
-    case Qt::Key_Right: dashboard->selectCard(".", true, control_is_down); break; // iterate all cards
-
-    case Qt::Key_Return: {
+    case Qt::Key_S: dashboard->selectCard("slash", true, shift_is_down);  break;
+    case Qt::Key_J: dashboard->selectCard("jink",  true, shift_is_down); break;
+    case Qt::Key_P: dashboard->selectCard("peach", true, shift_is_down); break;
+    case Qt::Key_O: dashboard->selectCard("analeptic", true, shift_is_down); break;
+    case Qt::Key_E: dashboard->selectCard("equip", true, shift_is_down); break;
+    case Qt::Key_W: dashboard->selectCard("weapon", true, shift_is_down); break;
+    case Qt::Key_F: dashboard->selectCard("armor", true, shift_is_down); break;
+    case Qt::Key_H: dashboard->selectCard("defensive_horse+offensive_horse", true, shift_is_down); break;
+    case Qt::Key_T: dashboard->selectCard("trick", true, shift_is_down); break;
+    case Qt::Key_A: dashboard->selectCard("aoe", true, shift_is_down); break;
+    case Qt::Key_N: dashboard->selectCard("nullification", true, shift_is_down); break;
+    case Qt::Key_Q: dashboard->selectCard("snatch", true, shift_is_down); break;
+    case Qt::Key_C: dashboard->selectCard("dismantlement", true, shift_is_down); break;
+    case Qt::Key_U: dashboard->selectCard("duel", true, shift_is_down); break;
+    case Qt::Key_L: dashboard->selectCard("lightning", true, shift_is_down); break;
+    case Qt::Key_I: dashboard->selectCard("indulgence", true, shift_is_down); break;
+    case Qt::Key_B: dashboard->selectCard("supply_shortage", true, shift_is_down); break;
+    case Qt::Key_Left: dashboard->selectCard(".", false, shift_is_down); break;
+    case Qt::Key_Right: dashboard->selectCard(".", true, shift_is_down); break; // iterate all cards
+    case Qt::Key_Space: {
         if (ok_button->isEnabled()) doOkButton();
+        else if (cancel_button->isEnabled())
+            doCancelButton();
+        else if (discard_button->isEnabled())
+            doDiscardButton();
         break;
     }
-    case Qt::Key_Escape: {
+    case Qt::Key_Escape:
+    case Qt::Key_X:
+    {
         if (ClientInstance->getStatus() == Client::Playing) {
             dashboard->unselectAll();
             enableTargets(NULL);
@@ -1422,7 +1424,7 @@ void RoomScene::keyReleaseEvent(QKeyEvent *event)
             dashboard->unselectAll();
         break;
     }
-    case Qt::Key_Space: {
+    case Qt::Key_Return: {
         if (cancel_button->isEnabled())
             doCancelButton();
         else if (discard_button->isEnabled())
@@ -4084,9 +4086,11 @@ void RoomScene::doLightboxAnimation(const QString &, const QStringList &args)
         _m_animationContext->setContextProperty("hero", hero);
         _m_animationContext->setContextProperty("skill", Sanguosha->translate(skill));
         QGraphicsObject *object = qobject_cast<QGraphicsObject *>(_m_animationComponent->create(_m_animationContext));
-        connect(object, SIGNAL(animationCompleted()), object, SLOT(deleteLater())); // cannot replace?
-        addItem(object);
-        bringToFront(object);
+        if (object) {
+            connect(object, SIGNAL(animationCompleted()), object, SLOT(deleteLater())); // cannot replace?
+            addItem(object);
+            bringToFront(object);
+        }
     }
 #endif
     else {

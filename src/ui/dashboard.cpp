@@ -357,6 +357,7 @@ void Dashboard::_addHandCard(CardItem *card_item, bool prepend, const QString &f
 
 void Dashboard::selectCard(const QString &pattern, bool forward, bool multiple)
 {
+    // unselect current item.
     if (!multiple && selected && selected->isSelected())
         selected->clickItem();
 
@@ -380,8 +381,10 @@ void Dashboard::selectCard(const QString &pattern, bool forward, bool multiple)
     CardItem *to_select = matches[index];
     if (!to_select->isSelected())
         to_select->clickItem();
-    else if (to_select->isSelected() && (!multiple || (multiple && to_select != selected)))
-        to_select->clickItem();
+    else {
+        if (!multiple || (multiple && to_select != selected))
+            to_select->clickItem();
+    }
     selected = to_select;
 
     adjustCards();
@@ -446,16 +449,26 @@ const Card *Dashboard::getSelected() const
         return NULL;
 }
 
-void Dashboard::selectCard(CardItem *item, bool isSelected)
+void Dashboard::selectCard(CardItem *item)
+{
+    setCardSelected(item, true);
+}
+
+void Dashboard::unselectCard(CardItem *item)
+{
+    setCardSelected(item, false);
+}
+
+void Dashboard::setCardSelected(CardItem* item, bool state_wanted)
 {
     bool oldState = item->isSelected();
-    if (oldState == isSelected) return;
+    if (oldState == state_wanted) return;
     m_mutex.lock();
 
-    item->setSelected(isSelected);
+    item->setSelected(state_wanted);
     QPointF oldPos = item->homePos();
     QPointF newPos = oldPos;
-    newPos.setY(newPos.y() + (isSelected ? 1 : -1) * S_PENDING_OFFSET_Y);
+    newPos.setY(newPos.y() + (state_wanted ? 1 : -1) * S_PENDING_OFFSET_Y);
     item->setHomePos(newPos);
     selected = item;
 
@@ -468,7 +481,7 @@ void Dashboard::unselectAll(const CardItem *except)
 
     foreach (CardItem *card_item, m_handCards) {
         if (card_item != except)
-            selectCard(card_item, false);
+            unselectCard(card_item);
     }
 
     adjustCards(true);
@@ -636,7 +649,7 @@ void Dashboard::selectAll()
     if (view_as_skill) {
         unselectAll();
         foreach (CardItem *card_item, m_handCards) {
-            selectCard(card_item, true);
+            selectCard(card_item);
             pendings << card_item;
         }
         updatePending();
@@ -1133,7 +1146,7 @@ void Dashboard::stopPending()
         if (view_as_skill->objectName().contains("guhuo")) {
             foreach(CardItem *item, m_handCards)
                 item->hideFootnote();
-        } 
+        }
         if (!view_as_skill->getExpandPile().isEmpty()) {
             foreach (const QString &pile_name, view_as_skill->getExpandPile().split(","))
                 retractPileCards(pile_name);
@@ -1231,12 +1244,12 @@ void Dashboard::onCardItemClicked()
 
     if (view_as_skill) {
         if (card_item->isSelected()) {
-            selectCard(card_item, false);
+            unselectCard(card_item);
             pendings.removeOne(card_item);
         } else {
             if (view_as_skill->inherits("OneCardViewAsSkill"))
                 unselectAll();
-            selectCard(card_item, true);
+            selectCard(card_item);
             pendings << card_item;
         }
 
@@ -1247,7 +1260,7 @@ void Dashboard::onCardItemClicked()
             emit card_selected(NULL);
         } else {
             unselectAll();
-            selectCard(card_item, true);
+            selectCard(card_item);
             selected = card_item;
 
             emit card_selected(selected->getCard());
@@ -1310,7 +1323,7 @@ void Dashboard::clearPendings()
 {
     selected = NULL;
     foreach(CardItem *item, m_handCards)
-        selectCard(item, false);
+        unselectCard(item);
     pendings.clear();
 }
 
@@ -1379,4 +1392,3 @@ const Card *Dashboard::pendingCard() const
 {
     return pending_card;
 }
-

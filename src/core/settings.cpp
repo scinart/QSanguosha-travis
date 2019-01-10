@@ -16,9 +16,14 @@ const int Settings::S_MOVE_CARD_ANIMATION_DURATION = 600;
 const int Settings::S_JUDGE_ANIMATION_DURATION = 1200;
 const int Settings::S_JUDGE_LONG_DELAY = 800;
 
-Settings::Settings():
-    QSettings("config.ini", QSettings::IniFormat),
-    Rect(-ViewWidth / 2, -ViewHeight / 2, ViewWidth, ViewHeight) {
+Settings::Settings()
+#ifdef Q_OS_WIN32
+    : QSettings("config.ini", QSettings::IniFormat),
+#else
+    : QSettings("QSanguosha.org", "QSanguosha"),
+#endif
+    Rect(-ViewWidth / 2, -ViewHeight / 2, ViewWidth, ViewHeight)
+{
 }
 
 void Settings::init()

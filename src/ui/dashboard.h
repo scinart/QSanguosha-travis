@@ -107,7 +107,9 @@ public:
         return _m_pile_expanded.keys();
     }
 
-    void selectCard(CardItem *item, bool isSelected);
+    void setCardSelected(CardItem* item, bool state_wanted);
+    void selectCard(CardItem *item);
+    void unselectCard(CardItem *item);
 
     int getButtonWidgetWidth() const;
     int getTextureWidth() const;
@@ -284,4 +286,3 @@ signals:
 };
 
 #endif
-
