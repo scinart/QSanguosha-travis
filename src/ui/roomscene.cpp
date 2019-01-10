@@ -1441,9 +1441,9 @@ void RoomScene::keyReleaseEvent(QKeyEvent *event)
     case Qt::Key_7:
     case Qt::Key_8:
     case Qt::Key_9: {
-        int position = event->key() - Qt::Key_0;
+        unsigned int position = event->key() - Qt::Key_0;
         if (alt_is_down)
-            dashboard->selectEquip(position);
+            dashboard->selectEquip((position+S_EQUIP_AREA_LENGTH-1)%S_EQUIP_AREA_LENGTH);
         else
             selectTarget(position, shift_is_down);
         break;

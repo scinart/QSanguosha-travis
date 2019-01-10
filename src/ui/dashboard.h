@@ -61,7 +61,7 @@ public:
     virtual void killPlayer();
     virtual void revivePlayer();
     void selectCard(const QString &pattern, bool forward = true, bool multiple = false);
-    void selectEquip(int position);
+    void selectEquip(unsigned int position); // as if clicked on equip[i], 0-indexed.
     void selectOnlyCard(bool need_only = false);
     void useSelected();
     const Card *getSelected() const;

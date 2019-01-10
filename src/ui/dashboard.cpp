@@ -386,12 +386,19 @@ void Dashboard::selectCard(const QString &pattern, bool forward, bool multiple)
     adjustCards();
 }
 
-void Dashboard::selectEquip(int position)
+void Dashboard::selectEquip(unsigned int i)
 {
-    int i = position - 1;
-    if (i< 0 || i >= sizeof(_m_equipCards) / sizeof(_m_equipCards[0]))
+    if (i >= S_EQUIP_AREA_LENGTH)
         return;
-    if (_m_equipCards[i] && _m_equipCards[i]->isMarkable()) {
+    if (_m_equipCards[i] == nullptr)
+        return;
+    if (_m_equipSkillBtns[i] != NULL && _m_equipSkillBtns[i]->isEnabled())
+        _m_equipSkillBtns[i]->click();
+    else if (_m_equipCards[i]->isMarkable()) { // 可弃装备，如强袭，流离
+        // According to the game rule, you cannot select a weapon as a card when
+        // you are invoking the skill of that equip. So something must be wrong.
+        // Crash.
+        Q_ASSERT(_m_equipSkillBtns[i] == NULL || !_m_equipSkillBtns[i]->isDown());
         _m_equipCards[i]->mark(!_m_equipCards[i]->isMarked());
         update();
     }
@@ -665,23 +672,11 @@ void Dashboard::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     PlayerCardContainer::mouseReleaseEvent(mouseEvent);
 
     CardItem *to_select = NULL;
-    int i;
-    for (i = 0; i < S_EQUIP_AREA_LENGTH; i++) {
+    for (unsigned i = 0; i < S_EQUIP_AREA_LENGTH; i++) {
         if (_m_equipRegions[i]->isUnderMouse()) {
-            to_select = _m_equipCards[i];
+            selectEquip(i);
             break;
         }
-    }
-    if (!to_select) return;
-    if (_m_equipSkillBtns[i] != NULL && _m_equipSkillBtns[i]->isEnabled())
-        _m_equipSkillBtns[i]->click();
-    else if (to_select->isMarkable()) {
-        // According to the game rule, you cannot select a weapon as a card when
-        // you are invoking the skill of that equip. So something must be wrong.
-        // Crash.
-        Q_ASSERT(_m_equipSkillBtns[i] == NULL || !_m_equipSkillBtns[i]->isDown());
-        to_select->mark(!to_select->isMarked());
-        update();
     }
 }
 
