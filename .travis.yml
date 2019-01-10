@@ -1,0 +1,9 @@
+os: osx
+
+before_install:
+  - brew update
+  - brew install qt5
+  - brew install swig
+
+script:
+  - make debug -f linux.mk
