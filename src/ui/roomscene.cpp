@@ -3638,60 +3638,8 @@ void RoomScene::speak()
 {
     if (game_started && ServerInfo.DisableChat)
         chat_box->append(tr("This room does not allow chatting!"));
-    else {
-        bool broadcast = true;
-        QString text = chat_edit->text();
-        if (text == ".StartBgMusic") {
-            broadcast = false;
-            Config.EnableBgMusic = true;
-            Config.setValue("EnableBgMusic", true);
-            _m_bgEnabled = true;
-            _m_bgMusicPath = Config.value("BackgroundMusic", "audio/system/background.ogg").toString();
-#ifdef AUDIO_SUPPORT
-            Audio::stopBGM();
-            Audio::playBGM(_m_bgMusicPath);
-            Audio::setBGMVolume(Config.BGMVolume);
-#endif
-        } else if (text.startsWith(".StartBgMusic=")) {
-            broadcast = false;
-            Config.EnableBgMusic = true;
-            Config.setValue("EnableBgMusic", true);
-            _m_bgEnabled = true;
-            QString path = text.mid(14);
-            if (path.startsWith("|")) {
-                path = path.mid(1);
-                Config.setValue("BackgroundMusic", path);
-                _m_bgMusicPath = path;
-            }
-#ifdef AUDIO_SUPPORT
-            Audio::stopBGM();
-            Audio::playBGM(path);
-            Audio::setBGMVolume(Config.BGMVolume);
-#endif
-        } else if (text == ".StopBgMusic") {
-            broadcast = false;
-            Config.EnableBgMusic = false;
-            Config.setValue("EnableBgMusic", false);
-            _m_bgEnabled = false;
-#ifdef AUDIO_SUPPORT
-            Audio::stopBGM();
-#endif
-        }
-        if (broadcast)
-            ClientInstance->speakToServer(text);
-        else {
-            QString title;
-            if (Self) {
-                title = Self->getGeneralName();
-                title = Sanguosha->translate(title);
-                title.append(QString("(%1)").arg(Self->screenName()));
-                title = QString("<b>%1</b>").arg(title);
-            }
-            QString line = tr("<font color='%1'>[%2] said: %3 </font>")
-                .arg(Config.TextEditColor.name()).arg(title).arg(text);
-            chat_box->append(QString("<p style=\"margin:3px 2px;\">%1</p>").arg(line));
-        }
-    }
+    else
+        ClientInstance->speakToServer(chat_edit->text());
     chat_edit->clear();
 }
 
