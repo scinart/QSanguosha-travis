@@ -18,7 +18,7 @@ DEBUG_BUILD:=$(PWD)/debug_build
 ifeq ($(UNAME),Darwin)
     QMAKE=qmake
 else
-    QMAKE=qmake-qt5
+    QMAKE=qmake
 endif
 
 all: debug

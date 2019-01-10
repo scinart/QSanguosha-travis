@@ -8,6 +8,8 @@ QT += network widgets multimedia quick
 
 TEMPLATE = app
 
+QMAKE_CXXFLAGS += -std=c++14
+
 CONFIG += lua audio
 
 CONFIG -= flat
