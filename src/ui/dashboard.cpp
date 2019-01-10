@@ -17,8 +17,7 @@
 
 using namespace QSanProtocol;
 
-Dashboard::Dashboard(QGraphicsPixmapItem *widget)
-    : button_widget(widget), selected(NULL), view_as_skill(NULL), filter(NULL)
+Dashboard::Dashboard(QGraphicsPixmapItem *widget) : button_widget(widget)
 {
     Q_ASSERT(button_widget);
     _dlayout = &G_DASHBOARD_LAYOUT;
@@ -29,10 +28,7 @@ Dashboard::Dashboard(QGraphicsPixmapItem *widget)
     animations = new EffectAnimation();
     pending_card = NULL;
     _m_pile_expanded = QMap<QString, QList<int> >();
-    for (int i = 0; i < S_EQUIP_AREA_LENGTH; i++) {
-        _m_equipSkillBtns[i] = NULL;
-        _m_isEquipsAnimOn[i] = false;
-    }
+
     // At this stage, we cannot decide the dashboard size yet, the whole
     // point in creating them here is to allow PlayerCardContainer to
     // anchor all controls and widgets to the correct frame.

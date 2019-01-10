@@ -14,6 +14,8 @@
 //#include "sprite.h"
 //#include "util.h"
 
+#include <array>
+
 class Card;
 class CardItem;
 class EffectAnimation;
@@ -225,7 +227,7 @@ protected:
     //QGraphicsPixmapItem *_m_rightFrameBg;
     QGraphicsPixmapItem *button_widget;
 
-    CardItem *selected;
+    CardItem *selected = nullptr;
     QList<CardItem *> m_handCards;
 
     QGraphicsPathItem *trusting_item;
@@ -249,14 +251,14 @@ protected:
     // for pendings
     QList<CardItem *> pendings;
     const Card *pending_card;
-    const ViewAsSkill *view_as_skill;
-    const FilterSkill *filter;
+    const ViewAsSkill *view_as_skill = nullptr;
+    const FilterSkill *filter = nullptr;
     QMap<QString, QList<int> > _m_pile_expanded;
 
     // for equip skill/selections
-    PixmapAnimation *_m_equipBorders[S_EQUIP_AREA_LENGTH];
-    QSanSkillButton *_m_equipSkillBtns[S_EQUIP_AREA_LENGTH];
-    bool _m_isEquipsAnimOn[S_EQUIP_AREA_LENGTH];
+    std::array<PixmapAnimation *, S_EQUIP_AREA_LENGTH> _m_equipBorders = {};
+    std::array<QSanSkillButton *, S_EQUIP_AREA_LENGTH> _m_equipSkillBtns = {};
+    std::array<bool,              S_EQUIP_AREA_LENGTH> _m_isEquipsAnimOn = {false};
 
     void _createEquipBorderAnimations();
     void _setEquipBorderAnimation(int index, bool turnOn);
