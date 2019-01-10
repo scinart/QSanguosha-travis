@@ -8,4 +8,4 @@ before_install:
   - brew install swig
   - brew link qt5 --force
 script:
-  - make debug -f linux.mk
+  - make debug -f mac.mk

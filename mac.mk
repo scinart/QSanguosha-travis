@@ -21,13 +21,12 @@ else
     QMAKE=qmake
 endif
 
-all: debug
+all: sanguosha.qm
 
 debug: debugQSanguosha
 
 debugQSanguosha: $(DEBUG_BUILD)/QSanguosha
-	cp $(DEBUG_BUILD)/QSanguosha debugQSanguosha
-	@rm $(DEBUG_BUILD)/QSanguosha
+	cp $(DEBUG_BUILD)/QSanguosha.app/Contents/MacOS/QSanguosha debugQSanguosha
 
 swig/sanguosha_wrap.cxx: swig/ai.i swig/card.i swig/list.i swig/luaskills.i swig/native.i swig/naturalvar.i swig/qvariant.i swig/sanguosha.i
 	cd swig && swig -c++ -lua sanguosha.i
@@ -50,8 +49,6 @@ $(BUILD)/QSanguosha: $(BUILD)/swig/sanguosha_wrap.cxx $(BUILD)/Makefile
 	@echo "PWD is: $(OLDPWD)"
 	@ln -sf linux.mk Makefile
 	cd $(BUILD) && $(MAKE)
-	@rm -f QSanguosha
-	@ln -sf $(BUILD)/QSanguosha QSanguosha
 
 $(DEBUG_BUILD)/QSanguosha: $(DEBUG_BUILD)/swig/sanguosha_wrap.cxx $(DEBUG_BUILD)/Makefile
 	@echo "PWD is: $(OLDPWD)"

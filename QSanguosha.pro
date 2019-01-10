@@ -8,9 +8,23 @@ QT += network widgets multimedia quick
 
 TEMPLATE = app
 
-QMAKE_CXXFLAGS += -std=c++14
+CONFIG += c++14
 
 CONFIG += lua audio
+
+CONFIG += app_bundle
+
+ICON = resource/icon/sgs.icns
+
+# extraFiles.files = $$PWD/image
+# extraFiles.files += $$PWD/audio
+# extraFiles.files += $$PWD/font
+# extraFiles.files += $$PWD/lua
+# extraFiles.files += $$PWD/diy
+# extraFiles.files += $$PWD/scenarios
+# extraFiles.files += $$PWD/skins
+# extraFiles.path = Contents/MacOS
+# QMAKE_BUNDLE_DATA += extraFiles
 
 CONFIG -= flat
 
