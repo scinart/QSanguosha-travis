@@ -615,14 +615,16 @@ QPixmap IQSanComponentSkin::getPixmap(const QString &key, const QString &arg, bo
     if (isImageKeyDefined(totalKey)) { // read from config file
         fileName = _readImageConfig(totalKey, clipRegion, clipping, scaleRegion, scaled);
     } else { // case 3: use default
-        Q_ASSERT(!arg.isNull());
         groupKey = key.arg(S_SKIN_KEY_DEFAULT);
         QString fileNameToResolve = _readImageConfig(groupKey, clipRegion, clipping, scaleRegion, scaled);
-        fileName = fileNameToResolve.arg(arg);
-        if (!QFile::exists(fileName)) {
-            groupKey = key.arg(S_SKIN_KEY_DEFAULT_SECOND);
-            QString fileNameToResolve = _readImageConfig(groupKey, clipRegion, clipping, scaleRegion, scaled);
+        if (!arg.isNull())
+        {
             fileName = fileNameToResolve.arg(arg);
+            if (!QFile::exists(fileName)) {
+                groupKey = key.arg(S_SKIN_KEY_DEFAULT_SECOND);
+                QString fileNameToResolve = _readImageConfig(groupKey, clipRegion, clipping, scaleRegion, scaled);
+                fileName = fileNameToResolve.arg(arg);
+            }
         }
     }
 
@@ -1046,4 +1048,3 @@ const QString &QSanSkinFactory::getCurrentSkinName() const
 {
     return _m_skinName;
 }
-
