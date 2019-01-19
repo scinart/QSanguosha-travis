@@ -47,7 +47,10 @@ void Button::init()
     title_item->setGraphicsEffect(de);
 
     QImage bgimg("image/system/button/button.png");
-
+    if(bgimg.isNull())
+    {
+        throw std::runtime_error("error reading file image/system/button/button.png");
+    }
     qreal pad = 10;
 
     int w = bgimg.width();
@@ -159,4 +162,3 @@ void Button::timerEvent(QTimerEvent *)
         }
     }
 }
-

@@ -9,8 +9,8 @@ public:
     QSanSelectableItem(const QString &filename, bool center_as_origin = false);
     QSanSelectableItem(bool center_as_origin = false);
     virtual QRectF boundingRect() const;
-    bool load(const QString &filename, bool center_as_origin = false);
-    bool load(const QString &filename, QSize newSize, bool center_as_origin = false);
+    void load(const QString &filename, bool center_as_origin = false);
+    void load(const QString &filename, QSize newSize, bool center_as_origin = false);
     void setPixmap(const QPixmap &pixmap);
     void makeGray();
     void scaleSmoothly(qreal ratio);
@@ -27,7 +27,7 @@ protected:
     QPixmap _m_mainPixmap;
 
 private:
-    bool _load(const QString &filename, QSize newSize, bool useNewSize, bool center_as_origin);
+    void _load(const QString &filename, QSize newSize, bool useNewSize, bool center_as_origin);
     bool markable, marked;
 
 signals:
@@ -37,4 +37,3 @@ signals:
 };
 
 #endif
-

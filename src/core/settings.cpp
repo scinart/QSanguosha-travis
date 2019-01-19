@@ -3,6 +3,8 @@
 #include "card.h"
 #include "engine.h"
 
+#include <stdexcept>
+
 Settings Config;
 
 static const qreal ViewWidth = 1280 * 0.8;
@@ -37,8 +39,10 @@ void Settings::init()
             BigFont.setFamily(font_family);
             SmallFont.setFamily(font_family);
             TinyFont.setFamily(font_family);
-        } else
+        } else {
             QMessageBox::warning(NULL, tr("Warning"), tr("Font file %1 could not be loaded!").arg(font_path));
+            // throw std::runtime_error(tr("Font file %1 could not be loaded!").arg(font_path).toStdString());
+        }
 
         int big_font = GetConfigFromLuaState(lua, "big_font").toInt();
         int small_font = GetConfigFromLuaState(lua, "small_font").toInt();
