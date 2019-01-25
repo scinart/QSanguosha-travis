@@ -44,7 +44,7 @@ void RoomScene::resetPiles()
 #include "qsanbutton.h"
 
 RoomScene::RoomScene(QMainWindow *main_window)
-    : main_window(main_window), game_started(false), m_tableBgPixmap(1, 1), m_tableBgPixmapOrig(1, 1)
+    : main_window(main_window), m_tableBgPixmap(1, 1), m_tableBgPixmapOrig(1, 1), game_started(false)
 {
     setParent(main_window);
 
@@ -1429,6 +1429,7 @@ void RoomScene::keyReleaseEvent(QKeyEvent *event)
             doCancelButton();
         else if (discard_button->isEnabled())
             doDiscardButton();
+        break;
     }
 
     case Qt::Key_0:

@@ -1034,6 +1034,7 @@ public:
                 return card->isKindOf("Jink");
             else if (pattern == "jink")
                 return card->isKindOf("Slash");
+            return false;
         }
         default:
             return false;
@@ -3087,7 +3088,7 @@ public:
                 if (p->askForSkillInvoke(objectName(), QVariant::fromValue(player))) {
                     int id = room->askForCardChosen(player, p, "he", objectName(), false, Card::MethodDiscard);
                     room->throwCard(id, p, p == player ? NULL : player);
-                    
+
                     QList<const Skill *> skills = player->getVisibleSkillList();
                     QList<const Skill *> skills_canselect;
                     foreach (const Skill *s, skills) {
@@ -3240,4 +3241,3 @@ TestPackage::TestPackage()
 }
 
 ADD_PACKAGE(Test)
-

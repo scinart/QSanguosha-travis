@@ -47,12 +47,12 @@ QString Card::Suit2String(Suit suit)
 
 bool Card::isRed() const
 {
-    return getColor() == Red;
+    return getColor() == Color::Red;
 }
 
 bool Card::isBlack() const
 {
-    return getColor() == Black;
+    return getColor() == Color::Black;
 }
 
 int Card::getId() const
@@ -122,15 +122,15 @@ Card::Suit Card::getSuit() const
         else if (subcardsLength() == 1)
             return Sanguosha->getCard(subcards.first())->getSuit();
         else {
-            Color color = Colorless;
+            Color color = Color::Colorless;
             foreach (int id, subcards) {
                 Color color2 = Sanguosha->getCard(id)->getColor();
-                if (color == Colorless)
+                if (color == Color::Colorless)
                     color = color2;
                 else if (color != color2)
                     return NoSuit;
             }
-            return (color == Red) ? NoSuitRed : NoSuitBlack;
+            return (color == Color::Red) ? NoSuitRed : NoSuitBlack;
         }
     } else
         return m_suit;
@@ -152,13 +152,13 @@ Card::Color Card::getColor() const
     case Spade:
     case Club:
     case NoSuitBlack:
-        return Black;
+        return Color::Black;
     case Heart:
     case Diamond:
     case NoSuitRed:
-        return Red;
+        return Color::Red;
     default:
-        return Colorless;
+        return Color::Colorless;
     }
 }
 
@@ -930,4 +930,3 @@ QString DummyCard::toString(bool) const
 {
     return "$" + subcardString();
 }
-

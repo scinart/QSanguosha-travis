@@ -186,7 +186,7 @@ public:
         sd->addSubcard(originalCard);
         return sd;
     }
-	
+
     int getEffectIndex(const ServerPlayer *player, const Card *) const
     {
         return 1;
@@ -748,9 +748,9 @@ BingyiCard::BingyiCard()
 
 bool BingyiCard::targetsFeasible(const QList<const Player *> &targets, const Player *Self) const
 {
-    Card::Color color = Card::Colorless;
+    Card::Color color = Card::Color::Colorless;
     foreach (const Card *c, Self->getHandcards()) {
-        if (color == Card::Colorless)
+        if (color == Card::Color::Colorless)
             color = c->getColor();
         else if (c->getColor() != color)
             return targets.isEmpty();
@@ -760,9 +760,9 @@ bool BingyiCard::targetsFeasible(const QList<const Player *> &targets, const Pla
 
 bool BingyiCard::targetFilter(const QList<const Player *> &targets, const Player *, const Player *Self) const
 {
-    Card::Color color = Card::Colorless;
+    Card::Color color = Card::Color::Colorless;
     foreach (const Card *c, Self->getHandcards()) {
-        if (color == Card::Colorless)
+        if (color == Card::Color::Colorless)
             color = c->getColor();
         else if (c->getColor() != color)
             return false;

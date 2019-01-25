@@ -32,9 +32,9 @@ class Player : public QObject
     Q_PROPERTY(bool faceup READ faceUp WRITE setFaceUp)
     Q_PROPERTY(bool alive READ isAlive WRITE setAlive)
     Q_PROPERTY(QString flags READ getFlags WRITE setFlags)
-    Q_PROPERTY(bool chained READ isChained WRITE setChained)
     Q_PROPERTY(bool owner READ isOwner WRITE setOwner)
     Q_PROPERTY(bool role_shown READ hasShownRole WRITE setShownRole)
+    Q_PROPERTY(bool chained READ isChained WRITE setChained)
     Q_PROPERTY(General::Gender gender READ getGender WRITE setGender)
 
     Q_ENUMS(Phase)
@@ -296,4 +296,3 @@ signals:
 };
 
 #endif
-

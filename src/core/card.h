@@ -30,6 +30,7 @@ class Card : public QObject
     Q_PROPERTY(bool can_recast READ canRecast WRITE setCanRecast)
 
     Q_ENUMS(Suit)
+    Q_ENUMS(Color)
     Q_ENUMS(CardType)
     Q_ENUMS(HandlingMethod)
 
@@ -39,10 +40,7 @@ public:
     {
         Spade, Club, Heart, Diamond, NoSuitBlack, NoSuitRed, NoSuit, SuitToBeDecided = -1
     };
-    enum Color
-    {
-        Red, Black, Colorless
-    };
+    enum class Color { Red, Black, Colorless };
     enum HandlingMethod
     {
         MethodNone, MethodUse, MethodResponse, MethodDiscard, MethodRecast, MethodPindian
@@ -225,4 +223,3 @@ public:
 };
 
 #endif
-

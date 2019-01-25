@@ -60,6 +60,9 @@ public:
     {
         m_isSelected = selected;
     }
+    inline void flipSelected(){
+        m_isSelected = !m_isSelected;
+    }
     bool isEquipped() const;
 
     void setFrozen(bool is_frozen);
@@ -128,4 +131,3 @@ signals:
 };
 
 #endif
-

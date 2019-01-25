@@ -556,7 +556,7 @@ public:
             if (!player->isAlive()) return false;
             player->tag["Qixing_user"] = true;
             Card::Color color = (Card::Color)(judge.pattern.toInt());
-            if (color == Card::Red) {
+            if (color == Card::Color::Red) {
                 const TriggerSkill *kuangfeng = Sanguosha->getTriggerSkill("kuangfeng");
                 room->getThread()->addTriggerSkill(kuangfeng);
                 foreach (ServerPlayer *p, room->getAllPlayers()) {
@@ -565,7 +565,7 @@ public:
                         p->gainMark("@gale");
                     }
                 }
-            } else if (color == Card::Black) {
+            } else if (color == Card::Color::Black) {
                 const TriggerSkill *dawu = Sanguosha->getTriggerSkill("dawu");
                 room->getThread()->addTriggerSkill(dawu);
                 foreach (ServerPlayer *p, room->getAllPlayers()) {
