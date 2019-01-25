@@ -104,12 +104,10 @@ QString Card::getNumberString() const
     if (isVirtualCard()) {
         if (subcardsLength() == 0 || subcardsLength() >= 2) number = 0;
     }
-    if (number == 10)
-        return "10";
-    else {
-        static const char *number_string = "-A23456789-JQK";
-        return QString(number_string[number]);
-    }
+    Q_ASSERT(number>=0);
+    Q_ASSERT(number<=13);
+    static const char * const number_string[] = {"-", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+    return QString(number_string[number]);
 }
 
 Card::Suit Card::getSuit() const
