@@ -40,8 +40,7 @@ public:
     {// 黑桃，梅花，红桃，方片，黑色无花色，红色无花色，无色。
         Spade, Club, Heart, Diamond, NoSuitBlack, NoSuitRed, NoSuit, SuitToBeDecided = -1
     };
-    // Color 的信息都涵盖在Suit里了，这是一个快捷方式。
-    enum class Color { Red, Black, Colorless };
+    enum class Color { Red, Black, Colorless }; // Color 的信息都涵盖在Suit里了，这是一个快捷方式。
     enum HandlingMethod
     {
         MethodNone, MethodUse, MethodResponse, MethodDiscard, MethodRecast, MethodPindian

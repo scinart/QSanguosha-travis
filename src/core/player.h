@@ -179,9 +179,9 @@ public:
     bool hasArmorEffect(const QString &armor_name) const;
     bool hasTreasure(const QString &treasure_name) const;
 
-    bool isKongcheng() const;
-    bool isNude() const;
-    bool isAllNude() const;
+    bool isKongcheng() const; // 无手牌
+    bool isNude() const;      // 无手牌无装备
+    bool isAllNude() const;   // 无手牌无装备无判定
 
     bool canDiscard(const Player *to, const QString &flags) const;
     bool canDiscard(const Player *to, int card_id) const;
